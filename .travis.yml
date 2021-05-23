@@ -1,0 +1,28 @@
+language: generic 
+sudo: required
+services:
+  - docker
+
+# Build project.
+before_install:
+  - docker build -t root217/react-teast -f ./client/Dockerfile.dev ./client
+
+# Run tests.
+script:
+  - docker run -e CI=true root217/react-test npm test
+
+# Build prod version of services
+after_success:
+  - docker build -t root217/multi-client ./client
+  - docker build -t root217/multi-nginx ./nginx
+  - docker build -t root217/multi-server ./server
+  - docker build -t root217/multi-worker ./worker
+
+# Log in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+# Push images to docker hub
+  - docker push -t root217/multi-client
+  - docker push -t root217/multi-nginx
+  - docker push -t root217/multi-server
+  - docker push -t root217/multi-worker
