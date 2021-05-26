@@ -22,7 +22,7 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
 # Push images to docker hub
-  - docker push -t root217/multi-client
-  - docker push -t root217/multi-nginx
-  - docker push -t root217/multi-server
-  - docker push -t root217/multi-worker
+  - docker push root217/multi-client
+  - docker push root217/multi-nginx
+  - docker push root217/multi-server
+  - docker push root217/multi-worker
